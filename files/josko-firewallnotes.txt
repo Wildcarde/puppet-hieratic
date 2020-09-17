@@ -1,0 +1,90 @@
+It's essentially two things:
+
+# a class that allows ports in and relies on session tracking
+# Params: - inherit - by default usual hash merge rules are used to get full
+#                     list of firewall rules, e.g. from network.  By setting
+#                     this to false only host/top rules will apply.
+class cses::firewall::rules(
+  Boolean $inherit = true
+) {
+  Firewall {
+    proto  => tcp,
+    state  => 'NEW'
+  }
+
+  $mergetype = $inherit ? {
+    true  => 'hash',
+    false => 'first'
+  }
+
+  if lookup('cses::firewall::active') {
+    $rules = lookup('cses::firewall::rules', {merge => $mergetype})
+    # as firewall does not accept the following as arrays we simulate it
+    $rrules = expand_hash_entries($rules, ['source', 'destination', 'proto'])
+
+    create_resources(firewall,$rrules)
+
+    # also realize any virtual firewall resources
+    # this way we don't need to worry elsewhere if firewall is active or not
+    if lookup('cses::firewall::strict', {'default_value' => false}) {
+      # if strict mode we need all rules
+      Firewall <| |>
+    } else {
+      # else skip strict ones
+      Firewall <| tag != 'strict' |>
+    }
+  }
+}
+
+and the function:
+
+13:56 $ cat ./cses/lib/puppet/parser/functions/expand_hash_entries.rb
+#
+# expand_hash_entries.rb
+#
+
+module Puppet::Parser::Functions
+  newfunction(:expand_hash_entries, :type => :rvalue, :doc => <<-EOS
+Takes as an argument a hash of hashes and an array of hash index names. If
+it finds one of hash names to be in index and to be an array it will expand
+the hash.
+    EOS
+  ) do |arguments|
+
+    raise(Puppet::ParseError, "expand_hash_entries(): Wrong number of arguments " +
+      "given (#{arguments.size} and we need 2)") if arguments.size != 2
+
+    # Hash of hashes
+    hh = arguments[0]
+    # Arrays of names to expand
+    arr_expand = arguments[1]
+
+    unless hh.is_a?(Hash) and arr_expand.is_a?(Array)
+      raise(Puppet::ParseError, 'expand_hash_entries(): Requires one hash and one array.')
+    end
+
+    # Where we will put processed result
+    new_hh = hh.clone
+    arr_expand.each do |one_expand|
+      new_hh.clone.each do |name, entries|
+        if entries.has_key?(one_expand) and (entries[one_expand].is_a?(Array) or entries[one_expand].is_a?(Hash))
+          if entries[one_expand].is_a?(Array)
+            tempexpand = Hash[*entries[one_expand].zip(entries[one_expand]).flatten]
+          else
+            tempexpand = entries[one_expand]
+          end
+          # go through expansion and perform it, so loop through values
+          tempexpand.each do |n,v|
+            new_name = name + " " + n
+            new_hh[new_name] = entries.clone
+            new_hh[new_name][one_expand] = v
+          end
+          new_hh.delete(name)
+        end
+      end
+    end
+    return new_hh
+  end
+end
+
+# vim: set ts=2 sw=2 et :

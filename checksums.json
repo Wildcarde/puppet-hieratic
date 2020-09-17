@@ -1,0 +1,21 @@
+{
+  "CHANGELOG.md": "e7a4026ea6ad55f58e070f49aac970d6",
+  "CONTRIBUTING.md": "d671063f767b6235b4695ec26c24a48f",
+  "Gemfile": "dbc1a15e3a264c03878028240cfc5d89",
+  "LICENSE": "cd4a7988e86c10029088e552e529581c",
+  "README.md": "4733b87e1fc700e24980374e29746b2f",
+  "Rakefile": "20b80e526e351a74df2001f504e756d2",
+  "manifests/firewall/post.pp": "86313b1ff540ab57df538eede2897827",
+  "manifests/firewall/pre.pp": "2c5dc0ef837dbca9163f039939f335e9",
+  "manifests/firewall.pp": "3764246a78deae1f24b0d05c012d6c85",
+  "manifests/init.pp": "1ce661da005d34f3b4ba178308309f06",
+  "metadata.json": "4348b18fe40a81e133f9525c4c9ba414",
+  "resources/createblock.tmpl": "692db2c324ddd86042ffc74a65f78660",
+  "resources/header.tmpl": "9636c66d5a3e3d4ef112c1bc4b09978a",
+  "resources/parameters.tmpl": "ccc77aa05f8b3f70141260013bbe19de",
+  "resources/typelist.txt": "a2e01289047a7200c2e6d79c52b504b8",
+  "spec/classes/init_spec.rb": "9f3dd5fd4729899212441bafb2c35179",
+  "spec/spec_helper.rb": "0db89c9a486df193c0e40095422e19dc",
+  "src/generate.py": "f41e9efe8cdd0f85cef80980956f844a",
+  "tests/init.pp": "39978ab5186f93551213269918f2b0f0"
+}

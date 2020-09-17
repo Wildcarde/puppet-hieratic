@@ -1,54 +1,59 @@
 {
-    "name": "tedivm-hieratic",
-    "version": "0.6.1",
-    "author": "tedivm",
-    "summary": "Hieratic allows Puppet Resources to be created directly in Hiera.",
-    "license": "MIT",
-    "source": "https://github.com/tedivm/puppet-hieratic",
-    "project_page": "https://github.com/tedivm/puppet-hieratic",
-    "issues_url": "https://github.com/tedivm/puppet-hieratic/issues",
-    "tags": ["hiera", "meta"],
-    "dependencies": [],
-    "operatingsystem_support": [
-        {
-            "operatingsystem": "RedHat"
-        },
-        {
-            "operatingsystem": "CentOS"
-        },
-        {
-            "operatingsystem": "OracleLinux"
-        },
-        {
-            "operatingsystem": "Scientific"
-        },
-        {
-            "operatingsystem": "SLES"
-        },
-        {
-            "operatingsystem": "Debian"
-        },
-        {
-            "operatingsystem": "Ubuntu"
-        },
-        {
-            "operatingsystem": "AIX"
-        },
-        {
-            "operatingsystem": "Mac"
-        },
-        {
-            "operatingsystem": "Windows"
-        }
-    ],
-    "requirements": [
-        {
-            "name": "pe",
-            "version_requirement": "3.x"
-        },
-        {
-            "name": "puppet",
-            "version_requirement": "3.x"
-        }
-    ]
+  "name": "tedivm-hieratic",
+  "version": "0.6.1",
+  "author": "tedivm",
+  "summary": "Hieratic allows Puppet Resources to be created directly in Hiera.",
+  "license": "MIT",
+  "source": "https://github.com/tedivm/puppet-hieratic",
+  "project_page": "https://github.com/tedivm/puppet-hieratic",
+  "issues_url": "https://github.com/tedivm/puppet-hieratic/issues",
+  "tags": [
+    "hiera",
+    "meta"
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat"
+    },
+    {
+      "operatingsystem": "CentOS"
+    },
+    {
+      "operatingsystem": "OracleLinux"
+    },
+    {
+      "operatingsystem": "Scientific"
+    },
+    {
+      "operatingsystem": "SLES"
+    },
+    {
+      "operatingsystem": "Debian"
+    },
+    {
+      "operatingsystem": "Ubuntu"
+    },
+    {
+      "operatingsystem": "AIX"
+    },
+    {
+      "operatingsystem": "Mac"
+    },
+    {
+      "operatingsystem": "Windows"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
+  "dependencies": [
+  
+  ]
 }
