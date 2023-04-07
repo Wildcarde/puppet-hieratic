@@ -1566,8 +1566,6 @@ class hieratic (
           $zpool_config)
   }
 
-
-
   if($class_enabled or $global_enable) {
     $class_config =
       hiera_hash("${prefix}${class_label}",
@@ -1577,6 +1575,37 @@ class hieratic (
       $class_config)
   }
 
+  ## only use the default firewall handler if firewalld isn't available
+  if $::firewalld_in_use != '' {
+  class {'hieratic::firewalld':
+    global_enable          => $global_enable,
+    firewall_label         => "${prefix}${firewall_label}",
+    firewall_enabled       => $firewall_enabled,
+    firewall_defaults      => $firewall_defaults,
+    firewall_pre_label     => "${prefix}${firewall_pre_label}",
+    firewall_pre_enabled   => $firewall_pre_enabled,
+    firewall_pre_defaults  => $firewall_pre_defaults,
+    firewall_post_label    => "${prefix}${firewall_post_label}",
+    firewall_post_enabled  => $firewall_post_enabled,
+    firewall_post_defaults => $firewall_post_defaults,
+    }
+
+
+  }elsif($firewall_enable_docker){
+    class { 'hieratic::firewalldocker':
+    global_enable          => $global_enable,
+    firewall_label         => "${prefix}${firewall_label}",
+    firewall_enabled       => $firewall_enabled,
+    firewall_defaults      => $firewall_defaults,
+    firewall_pre_label     => "${prefix}${firewall_pre_label}",
+    firewall_pre_enabled   => $firewall_pre_enabled,
+    firewall_pre_defaults  => $firewall_pre_defaults,
+    firewall_post_label    => "${prefix}${firewall_post_label}",
+    firewall_post_enabled  => $firewall_post_enabled,
+    firewall_post_defaults => $firewall_post_defaults,
+    }
+  }else{
+    ## if there are no 'special case' situations, just use the standard simplified handler
   class { 'hieratic::firewall':
     global_enable          => $global_enable,
     firewall_label         => "${prefix}${firewall_label}",
@@ -1588,6 +1617,6 @@ class hieratic (
     firewall_post_label    => "${prefix}${firewall_post_label}",
     firewall_post_enabled  => $firewall_post_enabled,
     firewall_post_defaults => $firewall_post_defaults,
+    }
   }
-
 }
