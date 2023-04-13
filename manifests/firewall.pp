@@ -24,6 +24,8 @@ class hieratic::firewall (
   $firewall_post_defaults = {}
 ) {
 
+  notify{"using hieratic firewall module":}
+
   if(defined('firewall')
     and ($firewall_enabled or $global_enable)) {
     notify{'using hieratic standard firewall behavior':}

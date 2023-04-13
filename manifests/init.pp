@@ -56,6 +56,7 @@ class hieratic (
   $firewall_post_label = 'firewall_post',
   $firewall_post_enabled = false,
   $firewall_post_defaults = {},
+  $firewall_enable_docker = hiera('hieratic::firewall::firewall_enable_docker', false),
   $class_label =
     'class',
   $class_defaults = {},
@@ -1576,7 +1577,7 @@ class hieratic (
   }
 
   ## only use the default firewall handler if firewalld isn't available
-  if $::firewalld_in_use != '' {
+  if $::firewalld_in_use  {
   class {'hieratic::firewalld':
     global_enable          => $global_enable,
     firewall_label         => "${prefix}${firewall_label}",
@@ -1591,7 +1592,7 @@ class hieratic (
     }
 
 
-  }elsif($firewall_enable_docker){
+  }elsif $firewall_enable_docker {
     class { 'hieratic::firewalldocker':
     global_enable          => $global_enable,
     firewall_label         => "${prefix}${firewall_label}",
