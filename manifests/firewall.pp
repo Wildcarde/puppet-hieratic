@@ -24,8 +24,6 @@ class hieratic::firewall (
   $firewall_post_defaults = {}
 ) {
 
-  notify{"using hieratic firewall module":}
-
   if(defined('firewall')
     and ($firewall_enabled or $global_enable)) {
     notify{'using hieratic standard firewall behavior':}
@@ -36,8 +34,6 @@ class hieratic::firewall (
       before  => Class['hieratic::firewall::post'],
       require => Class['hieratic::firewall::pre'],
       }
-
-  #todo: add compound firewall lookup and deep_merge for config
 
     $firewall_config = hiera_hash($firewall_label, {})
 

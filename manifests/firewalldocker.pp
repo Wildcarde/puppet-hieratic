@@ -115,7 +115,10 @@ class hieratic::firewalldocker (
     }
 
     $firewall_config = hiera_hash($firewall_label, {})
-    create_resources(firewall, $firewall_config, $firewall_defaults)
+
+    $firewall_config_expanded = hashexpander($firewall_config,['dport','source','proto'])
+
+    create_resources(firewall, $firewall_config_expanded, $firewall_defaults)
 
     class { ['hieratic::firewall::pre', 'hieratic::firewall::post']: }
   }
