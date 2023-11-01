@@ -10,7 +10,6 @@
 #
 # Copyright 2015 Robert Hafner
 #
-
 class hieratic::firewall::pre {
   Firewall {
     require => undef,
@@ -19,7 +18,7 @@ class hieratic::firewall::pre {
     and ($hieratic::firewall::firewall_pre_enabled
       or $hieratic::firewall::global_enable)) {
     create_resources(firewall,
-      hiera_hash($hieratic::firewall::firewall_pre_label,
-        $hieratic::firewall::firewall_pre_defaults))
+      hashexpander(hiera_hash($hieratic::firewall::firewall_pre_label,
+        $hieratic::firewall::firewall_pre_defaults),['dport','source','proto']))
   }
 }

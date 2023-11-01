@@ -54,17 +54,19 @@ include ::firewalld ## import firewalld if we've gotten this far
 
     firewalld_zone{$::firewalld_default_zone:
       purge_rich_rules => true,
+      purge_services   => true,
+      purge_ports      => true,
       }
 
     $firewall_config = hiera_hash($firewall_label, {})
 
     $firewall_config_expanded = hashexpander($firewall_config,['dport','source','proto'])
 
-    notify{'converting rules': message => "${$firewall_config_expanded}",}
+    notify{'converting rules': message => "${$firewall_config_expanded}", loglevel => debug}
 
     $firewalld_converted_config = fwtofwd($firewall_config_expanded, $::firewalld_default_zone)
 
-    notify{'converted hash': message => "${$firewalld_converted_config}",}
+    notify{'converted hash': message => "${$firewalld_converted_config}", loglevel => debug}
 
     #create_resources(firewalld_rich_rule, $firewalld_config)
     $firewalld_converted_config.each | String $key, Hash $attrs| {

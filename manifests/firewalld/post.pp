@@ -10,10 +10,9 @@
 #
 # Copyright 2015 Robert Hafner
 #
-
 class hieratic::firewalld::post {
   Firewalld_rich_rule {
-     before => undef,
+    before => undef,
   }
   if(defined('firewalld')
     and ($hieratic::firewall::firewall_post_enabled

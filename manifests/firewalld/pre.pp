@@ -10,7 +10,6 @@
 #
 # Copyright 2015 Robert Hafner
 #
-
 class hieratic::firewalld::pre {
   Firewalld_rich_rule {
     require => undef,

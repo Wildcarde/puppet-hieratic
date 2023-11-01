@@ -6,7 +6,7 @@ Facter.add(:iptablesInUse) do
     confine :systemdInUse => true
     setcode do
         iptablesInUse = false
-        if system('systemctl status iptables')
+        if system('systemctl status iptables --no-pager')
             iptablesInUse = true
         end
         

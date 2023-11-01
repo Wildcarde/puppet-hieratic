@@ -2,7 +2,7 @@ module Puppet::Parser::Functions
   newfunction(:expand_hash_entries, :type => :rvalue, :doc => <<-EOS
 Takes as an argument a hash of hashes and an array of hash index names. If
 it finds one of hash names to be in index and to be an array it will expand
-the hash.
+the hash.  NOTE: this is the old version of hash expander it is not used!!!!!!!
     EOS
   ) do |arguments|
 
