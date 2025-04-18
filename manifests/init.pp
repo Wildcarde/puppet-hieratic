@@ -1577,7 +1577,7 @@ class hieratic (
   }
 
   ## only use the default firewall handler if firewalld isn't available
-  if $::firewalld_in_use  {
+  if $facts['firewalld_in_use']  {
   class {'hieratic::firewalld':
     global_enable          => $global_enable,
     firewall_label         => "${prefix}${firewall_label}",
@@ -1589,6 +1589,7 @@ class hieratic (
     firewall_post_label    => "${prefix}${firewall_post_label}",
     firewall_post_enabled  => $firewall_post_enabled,
     firewall_post_defaults => $firewall_post_defaults,
+    firewall_enable_docker => $firewall_enable_docker
     }
 
 

@@ -10,6 +10,7 @@
 #
 # Copyright 2015 Robert Hafner
 #
+
 class hieratic::firewall (
   $global_enable = true,
   $firewall_label = firewall,
@@ -40,6 +41,16 @@ class hieratic::firewall (
 
     create_resources(firewall, $firewall_config_expanded, $firewall_defaults)
 
-    class { ['hieratic::firewall::pre', 'hieratic::firewall::post']: }
+    class { ['hieratic::firewall::pre', 'hieratic::firewall::post']: 
+    global_enable          => $global_enable,
+    firewall_label         => $firewall_label,
+    firewall_enabled       => $firewall_enabled,
+    firewall_defaults      => $firewall_defaults,
+    firewall_pre_label     => $firewall_pre_label,
+    firewall_pre_enabled   => $firewall_pre_enabled,
+    firewall_pre_defaults  => $firewall_pre_defaults,
+    firewall_post_label    => $firewall_post_label,
+    firewall_post_enabled  => $firewall_post_enabled,
+    firewall_post_defaults => $firewall_post_defaults,}
   }
 }

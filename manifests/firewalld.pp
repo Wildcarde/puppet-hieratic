@@ -20,7 +20,8 @@ class hieratic::firewalld (
   $firewall_pre_defaults = {},
   $firewall_post_label = firewall_post,
   $firewall_post_enabled = false,
-  $firewall_post_defaults = {}
+  $firewall_post_defaults = {},
+  $firewall_enable_docker = false,
 ) {
 
 ## this is going to make some possibly heavy handed decisions
@@ -34,7 +35,7 @@ class hieratic::firewalld (
 #'comment':
 #  proto: 'tcp'
 #  dport: '22'
-#  action: 'accept'
+#  jump: 'accept'
 ##to:
 #'comment':
 #  ensure: present
@@ -42,7 +43,7 @@ class hieratic::firewalld (
 #  port:
 #    port: 22
 #    protocol: 'tcp'
-#  action: 'accept'
+#  jump: 'accept'
 
 include ::firewalld ## import firewalld if we've gotten this far
 
@@ -50,12 +51,20 @@ include ::firewalld ## import firewalld if we've gotten this far
     and ($firewall_enabled or $global_enable)) {
 
 
-    notify{"using hieratic firewalld module, zone: ${::firewalld_default_zone}":}
+    notify{"using hieratic firewalld module, zone: ${$facts['firewalld_default_zone']}":}
 
-    firewalld_zone{$::firewalld_default_zone:
+    if ($firewall_enable_docker){
+      $fwd_masquerade=true
+    }
+    else
+    {
+      $fwd_masquerade=false
+    }
+    firewalld_zone{$facts['firewalld_default_zone']:
       purge_rich_rules => true,
       purge_services   => true,
       purge_ports      => true,
+      masquerade       => $fwd_masquerade,
       }
 
     $firewall_config = hiera_hash($firewall_label, {})
@@ -64,7 +73,7 @@ include ::firewalld ## import firewalld if we've gotten this far
 
     notify{'converting rules': message => "${$firewall_config_expanded}", loglevel => debug}
 
-    $firewalld_converted_config = fwtofwd($firewall_config_expanded, $::firewalld_default_zone)
+    $firewalld_converted_config = fwtofwd($firewall_config_expanded, $facts['firewalld_default_zone'])
 
     notify{'converted hash': message => "${$firewalld_converted_config}", loglevel => debug}
 
@@ -77,6 +86,5 @@ include ::firewalld ## import firewalld if we've gotten this far
       }
     }
 
-    class { ['hieratic::firewalld::pre', 'hieratic::firewalld::post']: }
   }
 }

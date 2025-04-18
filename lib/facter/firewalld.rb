@@ -3,7 +3,7 @@
 
 ### ref: https://stackoverflow.com/questions/18728069/ruby-system-command-check-exit-code
 
-Facter.add(:firewalld_in_use) do
+Facter.add('firewalld_in_use') do
     confine :kernel => "Linux"
     confine :systemdInUse => true
     setcode do
@@ -15,7 +15,7 @@ Facter.add(:firewalld_in_use) do
     end
 end
 
-Facter.add(:firewalld_default_zone) do
+Facter.add('firewalld_default_zone') do
     confine :firewalld_in_use => true
     setcode do
         firewalld_default_zone="public" # this is the general firewalld spec default

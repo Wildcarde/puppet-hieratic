@@ -45,8 +45,8 @@ Puppet::Functions.create_function(:fwtofwd) do
                     rr.merge!(source: fw_rule['source'])
                 end
 
-                if (fw_rule.has_key?('action'))
-                    rr.merge!(action: fw_rule['action'])
+                if (fw_rule.has_key?('jump'))
+                    rr.merge!(action: fw_rule['jump'])
                 else
                     raise(Puppet::ParseError, 'fwtofwd(): action setting required')
                 end
@@ -54,22 +54,26 @@ Puppet::Functions.create_function(:fwtofwd) do
                 ##handle port and protocol
                 #note: this will only handle protocol/port allows at this time
                 # service/icmp_block/masquerade/forward_port will require using direct firewalld rules
-                protocol=""
+                proto=""
                 if (fw_rule.has_key?('proto'))
-                    protocol=fw_rule['proto']
+                    proto=fw_rule['proto']
                 else
-                    protocol='tcp'
+                    proto='tcp'
                 end
                 
                 if fw_rule.has_key?('dport')
                     ## make port based rich rule
-                    rr.merge!(port: {port: fw_rule['dport'], protocol: protocol})
+                    rr.merge!(port: {port: fw_rule['dport'], protocol: proto})
 
                 else
-                    rr.merge!(protocol: protocol)
+                    rr.merge!(protocol: proto)
                     ## make protocol based rich rule, no protocol is specified use tcp
                 end
                 fwd_rule= {rule_name => rr}
+                ## handle ipv6 setting
+                if fw_rule.has_key?('protocol')
+                    rr.merge!(family: fw_rule['protocol'])
+                end
                 fwd_hash.merge!(fwd_rule)## append rich rule to firewalld hash
             else
                 raise(Puppet::ParseError, 'fwtofwd(): attempted to convert non hash')

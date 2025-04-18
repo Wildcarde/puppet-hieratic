@@ -296,43 +296,43 @@ accidental lockouts.
 firewall_pre:
   '000 accept all icmp':
     proto: 'icmp'
-    action: 'accept'
+    jump: 'accept'
   '001 accept all to lo interface':
     proto: 'all'
     iniface: 'lo'
-    action: 'accept'
+    jump: 'accept'
   '002 accept established related rules':
     proto: 'all'
     state:
       - 'ESTABLISHED'
       - 'RELATED'
-    action: 'accept'
+    jump: 'accept'
 
 firewall:
   '022 accept ssh traffic':
     proto: 'tcp'
     dport: '22'
-    action: 'accept'
+    jump: 'accept'
 
 firewall_post:
   '910 drop remaining inputs':
     chain: 'INPUT'
-    action: 'drop'
+    jump: 'drop'
     proto: 'all'
   '910 drop remaining inputs ipv6':
     chain: 'INPUT'
-    action: 'drop'
+    jump: 'drop'
     proto: 'all'
-    provider: 'ip6tables'
+    protocol: 'ip6tables'
   '910 drop remaining forwards':
     chain: 'FORWARD'
-    action: 'drop'
+    jump: 'drop'
     proto: 'all'
   '910 drop remaining forwards ipv6':
     chain: 'FORWARD'
-    action: 'drop'
+    jump: 'drop'
     proto: 'all'
-    provider: 'ip6tables'
+    protocol: 'ip6tables'
 ```
 
 ## Reference
